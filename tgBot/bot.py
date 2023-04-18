@@ -2,20 +2,19 @@ import telebot;
 
 with open("token", "r") as stream:
     token = str(stream.read()).split()[0]
+with open("known_users", "r") as stream:
+    known_usernames = stream.read().split()
 
 bot = telebot.TeleBot(token);
-
-def is_known_username(username):
-    known_usernames = ['username1', 'username2']
-
-    return username in known_usernames
 
 def get_help():
     return "Vsem sasatb"
 
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
-    if (not is_known_username(message.from_user.username)):
+    #print(message.from_user.username)
+
+    if (message.from_user.username not in known_usernames):
         bot.send_message(message.from_user.id, "sorry is bot not for you");
         return;
 
